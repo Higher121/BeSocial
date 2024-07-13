@@ -1,0 +1,13 @@
+/* styles.css or App.css */
+.dark-mode {
+    background-color: #000000;
+    color: #ffffff;
+       /* Add more styles for dark mode */
+}
+
+
+#darkBtn{
+    font-weight: 900;
+    border: 3px solid rgb(139, 19, 155);
+    background-color: aquamarine;
+}

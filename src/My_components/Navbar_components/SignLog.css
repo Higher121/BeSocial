@@ -1,0 +1,68 @@
+.designForm {
+  border: 3px solid green;
+  margin: 5%;
+  border-radius: 10px;
+  
+}
+
+@media screen and (min-width: 668px) {
+  .designForm {
+    margin: 25%;
+    margin-top: 25px;
+  margin-bottom: 15px;
+  }
+
+/* For login Screen */
+  #LoginForm{
+    height: 600px;
+  }
+#form-div{
+  padding: 4%;
+}
+.customCheck{
+  margin-bottom: 0px;
+}
+
+}
+
+.custom-input , .custom-select {
+  margin: 15% auto;  /* Apply margin from both sides */
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 70%;        /* Ensure the input fields don't overflow */
+}
+
+.form-error {
+  color: red;
+  font-size: 0.9em;
+}
+.custom-label {
+  font-weight: bold;  /* Make the font bold */
+  font-size: 1.2em;   /* Increase the font size */
+  color: #333;        /* Change the color to a nice shade */
+  display: block;     /* Make sure the label takes up the full width */
+  margin-bottom: 5px; /* Add some space below the label */
+  margin-left: 16%;
+}
+
+.customText{
+    margin-left: 20%;
+}
+
+.customCheck{
+    margin-left: 20%;
+    margin-bottom: 10px;
+    margin-top: 3px;
+}
+.customBtn{
+    margin-left: 43%;
+    margin-bottom: 10px;
+}
+
+.signup-link{
+    margin-bottom: 5px;
+    margin-left: 15%;
+    margin-right: 15%;
+    text-align: center;
+    border: .5px dashed red;
+}

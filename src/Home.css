@@ -1,0 +1,9 @@
+.heroSection{
+    height: 20rem;
+    width: 96%;
+    background: linear-gradient(20deg,rgb(85, 154, 85),rgb(190, 157, 195),rgb(132, 165, 147),rgb(193, 160, 218));
+    padding: 2%;
+    border-radius: 10px;
+    margin: 2%;
+    text-align: center;
+}git push -u origin main
