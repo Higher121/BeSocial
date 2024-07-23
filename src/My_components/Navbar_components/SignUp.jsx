@@ -172,9 +172,13 @@ function SignUp() {
         </label>
       </div>
       {formError && <div className="form-error">{formError}</div>}
-      <button type="submit" className="btn btn-primary custom-btn">
-        Sign Up
-      </button>
+        <button type="submit" className="btn btn-primary customBtn">Submit</button>
+      {formError && <div className="form-error">{formError}</div>}
+      <div className="signup-link">
+        <Link as={Link} to="/login" > Already A Member !! LogIn Now</Link>
+      </div>
+
+
     </form>
   );
 }
