@@ -14,8 +14,6 @@ const db = mysql.createConnection({
   password: 'TMS@2024',
   database: 'social_media',
   authPlugin: 'mysql_native_password'  // Add this line if necessary
-
-
 });
 
 db.connect((err) => {
@@ -24,6 +22,23 @@ db.connect((err) => {
   }
   console.log('MySQL connected...');
 });
+
+// User Signup
+app.post('/api/signup', (req, res) => {
+  const { fullName, countryCode, mobileNumber, email, password } = req.body;
+  const sql = 'INSERT INTO user (u_name, country_code, mobile_number, u_email, u_password) VALUES (?, ?, ?, ?, ?)';
+  db.query(sql, [fullName, countryCode, mobileNumber, email, password], (err, result) => {
+    if (err) {
+      res.status(500).send({ error: 'Failed to sign up user.' });
+      return;
+    }
+    res.status(201).send({ id: result.insertId, fullName, countryCode, mobileNumber, email });
+  });
+});
+
+
+
+
 
 // Create a post
 app.post('/api/posts', (req, res) => {

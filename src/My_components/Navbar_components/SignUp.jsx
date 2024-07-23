@@ -1,6 +1,7 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import './SignLog.css'; // Import the CSS file
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -9,15 +10,13 @@ function SignUp() {
   const [passwordError, setPasswordError] = useState('');
   const [agreedT_C, setAgreedT_C] = useState(false);
 
-  // Experiment for mobile Number Input
   const [fullName, setFullName] = useState('');
   const [countryCode, setCountryCode] = useState('+1');
   const [mobileNumber, setMobileNumber] = useState('');
   const [mobileError, setMobileError] = useState('');
   const [formError, setFormError] = useState('');
-  // Experiment
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     let formValid = true;
@@ -54,7 +53,18 @@ function SignUp() {
     }
 
     if (formValid) {
-      alert(`Full Name: ${fullName}\nCountry Code: ${countryCode}\nMobile Number: ${mobileNumber}\nEmail: ${email}`);
+      try {
+        const response = await axios.post('http://localhost:5000/api/signup', {
+          fullName,
+          countryCode,
+          mobileNumber,
+          email,
+          password
+        });
+        alert('Signup successful!');
+      } catch (error) {
+        setFormError('Failed to sign up user.');
+      }
     } else {
       setFormError(errorMessage);
     }
@@ -157,15 +167,14 @@ function SignUp() {
           onChange={(e) => setAgreedT_C(e.target.checked)}
           required
         />
-        <label className="form-check-label" htmlFor="exampleCheck1">
-          I Agree to <a href="#"> Terms & Conditions </a>
+      <label className="form-check-label" htmlFor="exampleCheck1">
+          I agree to the <Link to="/terms-and-conditions">Terms & Conditions</Link>
         </label>
       </div>
-      <button type="submit" className="btn btn-primary customBtn">Submit</button>
       {formError && <div className="form-error">{formError}</div>}
-      <div className="signup-link">
-        <Link as={Link} to="/login" > Already A Member !! LogIn Now</Link>
-      </div>
+      <button type="submit" className="btn btn-primary custom-btn">
+        Sign Up
+      </button>
     </form>
   );
 }
