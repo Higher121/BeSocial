@@ -11,19 +11,23 @@ function LogIn() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('Attempting to log in:', { email, password, rememberMe });  // Log attempt
 
     try {
       const response = await axios.post('http://localhost:5000/api/login', {
         email,
         password
       });
-
+      
       if (response.status === 200) {
         alert('Login successful!');
         // Handle successful login, e.g., save user data, redirect, etc.
+      } else {
+        setFormError('Invalid email or password.');
       }
     } catch (error) {
-      setFormError(error.response?.data?.error || 'Failed to login user.');
+      console.error('Login request error:', error);  // Log error
+      setFormError('Failed to login user.');
     }
   };
 

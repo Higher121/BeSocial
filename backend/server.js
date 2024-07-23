@@ -18,6 +18,7 @@ const db = mysql.createConnection({
 
 db.connect((err) => {
   if (err) {
+    console.error('Error connecting to MySQL:', err);
     throw err;
   }
   console.log('MySQL connected...');
@@ -26,9 +27,12 @@ db.connect((err) => {
 // User Signup
 app.post('/api/signup', (req, res) => {
   const { fullName, countryCode, mobileNumber, email, password } = req.body;
+  console.log('Signup request received:', req.body);  // Log incoming request data
+
   const sql = 'INSERT INTO user (u_name, country_code, mobile_number, u_email, u_password) VALUES (?, ?, ?, ?, ?)';
   db.query(sql, [fullName, countryCode, mobileNumber, email, password], (err, result) => {
     if (err) {
+      console.error('Error inserting user:', err);
       res.status(500).send({ error: 'Failed to sign up user.' });
       return;
     }
@@ -39,6 +43,8 @@ app.post('/api/signup', (req, res) => {
 // User Login
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
+  console.log('Login request received:', req.body);  // Log incoming request data
+
   const sql = "SELECT * FROM user WHERE u_email = ? AND u_password = ?";
   
   db.query(sql, [email, password], (err, result) => {
@@ -51,10 +57,10 @@ app.post('/api/login', (req, res) => {
     if (result.length > 0) {
       const user = result[0];
       res.status(200).send({
-        id: user.id,
-        fullName: user.u_name,       // Update to match your database field
-        countryCode: user.country_code, // Update to match your database field
-        mobileNumber: user.mobile_number, // Update to match your database field
+        id: user.u_id,
+        fullName: user.u_name,
+        countryCode: user.country_code,
+        mobileNumber: user.mobile_number,
         email: user.u_email
       });
     } else {
@@ -66,10 +72,15 @@ app.post('/api/login', (req, res) => {
 // Create a post
 app.post('/api/posts', (req, res) => {
   const { title, content, imageUrl } = req.body;
+  console.log('Create post request received:', req.body);  // Log incoming request data
+
   const post = { title, content, image_url: imageUrl };
   const sql = 'INSERT INTO posts SET ?';
   db.query(sql, post, (err, result) => {
-    if (err) throw err;
+    if (err) {
+      console.error('Error creating post:', err);
+      throw err;
+    }
     res.send({ id: result.insertId, ...post });
   });
 });
@@ -78,7 +89,10 @@ app.post('/api/posts', (req, res) => {
 app.get('/api/posts', (req, res) => {
   const sql = 'SELECT * FROM posts ORDER BY created_at DESC';
   db.query(sql, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      console.error('Error fetching posts:', err);
+      throw err;
+    }
     res.send(results);
   });
 });
