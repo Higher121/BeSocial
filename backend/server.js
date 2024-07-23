@@ -24,36 +24,24 @@ db.connect((err) => {
 });
 
 // User Signup
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-
-app.post('/api/signup', async (req, res) => {
+app.post('/api/signup', (req, res) => {
   const { fullName, countryCode, mobileNumber, email, password } = req.body;
-  try {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const sql = 'INSERT INTO user (u_name, country_code, mobile_number, u_email, u_password) VALUES (?, ?, ?, ?, ?)';
-    db.query(sql, [fullName, countryCode, mobileNumber, email, hashedPassword], (err, result) => {
-      if (err) {
-        console.error('Signup error:', err);
-        res.status(500).send({ error: 'Failed to sign up user.' });
-        return;
-      }
-      res.status(201).send({ id: result.insertId, fullName, countryCode, mobileNumber, email });
-    });
-  } catch (error) {
-    console.error('Hashing error:', error);
-    res.status(500).send({ error: 'Failed to sign up user.' });
-  }
+  const sql = 'INSERT INTO user (u_name, country_code, mobile_number, u_email, u_password) VALUES (?, ?, ?, ?, ?)';
+  db.query(sql, [fullName, countryCode, mobileNumber, email, password], (err, result) => {
+    if (err) {
+      res.status(500).send({ error: 'Failed to sign up user.' });
+      return;
+    }
+    res.status(201).send({ id: result.insertId, fullName, countryCode, mobileNumber, email });
+  });
 });
 
 // User Login
-const bcrypt = require('bcrypt');
-
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
-  const sql = "SELECT * FROM user WHERE u_email = ?";
-
-  db.query(sql, [email], async (err, result) => {
+  const sql = "SELECT * FROM user WHERE u_email = ? AND u_password = ?";
+  
+  db.query(sql, [email, password], (err, result) => {
     if (err) {
       console.error('Database query error:', err);
       res.status(500).send({ error: 'Failed to login user.' });
@@ -62,29 +50,18 @@ app.post('/api/login', (req, res) => {
 
     if (result.length > 0) {
       const user = result[0];
-      try {
-        const match = await bcrypt.compare(password, user.u_password);
-        if (match) {
-          res.status(200).send({
-            id: user.u_id,
-            fullName: user.u_name,
-            countryCode: user.country_code,
-            mobileNumber: user.mobile_number,
-            email: user.u_email
-          });
-        } else {
-          res.status(401).send({ error: 'Invalid email or password.' });
-        }
-      } catch (error) {
-        console.error('Password comparison error:', error);
-        res.status(500).send({ error: 'Failed to login user.' });
-      }
+      res.status(200).send({
+        id: user.id,
+        fullName: user.u_name,       // Update to match your database field
+        countryCode: user.country_code, // Update to match your database field
+        mobileNumber: user.mobile_number, // Update to match your database field
+        email: user.u_email
+      });
     } else {
       res.status(401).send({ error: 'Invalid email or password.' });
     }
   });
 });
-
 
 // Create a post
 app.post('/api/posts', (req, res) => {
