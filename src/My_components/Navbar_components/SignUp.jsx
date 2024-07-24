@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './SignLog.css'; // Import the CSS file
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import LogIn from './LogIn';
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -15,6 +16,8 @@ function SignUp() {
   const [mobileNumber, setMobileNumber] = useState('');
   const [mobileError, setMobileError] = useState('');
   const [formError, setFormError] = useState('');
+
+  const [isSignedUp, setIsSignedUp] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -61,7 +64,8 @@ function SignUp() {
           email,
           password
         });
-        alert('Signup successful!');
+        alert('Signup successful! Login Now');
+        setIsSignedUp(true);
       } catch (error) {
         setFormError('Failed to sign up user.');
       }
@@ -69,6 +73,10 @@ function SignUp() {
       setFormError(errorMessage);
     }
   };
+
+  if (isSignedUp) {
+    return <LogIn />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="designForm">
@@ -175,10 +183,8 @@ function SignUp() {
         <button type="submit" className="btn btn-primary customBtn">Submit</button>
       {formError && <div className="form-error">{formError}</div>}
       <div className="signup-link">
-        <Link as={Link} to="/login" > Already A Member !! LogIn Now</Link>
+        <Link to="/login">Already A Member !! LogIn Now</Link>
       </div>
-
-
     </form>
   );
 }

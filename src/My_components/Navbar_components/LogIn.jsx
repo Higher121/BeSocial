@@ -2,12 +2,16 @@ import { useState } from 'react';
 import './SignLog.css';  
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { Home } from '../../Home';
 
 function LogIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [formError, setFormError] = useState('');
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,6 +25,7 @@ function LogIn() {
       
       if (response.status === 200) {
         alert('Login successful!');
+        setIsLoggedIn(true);
         // Handle successful login, e.g., save user data, redirect, etc.
       } else {
         setFormError('Invalid email or password.');
@@ -30,6 +35,13 @@ function LogIn() {
       setFormError('Failed to login user.');
     }
   };
+
+if(isLoggedIn){
+  return (
+     <Home></Home> //hERE USER  NAME SHOULD ALSO COME FROM dtBS
+  )
+}
+
 
   return (
     <form onSubmit={handleSubmit} id='LoginForm' className='designForm'>
