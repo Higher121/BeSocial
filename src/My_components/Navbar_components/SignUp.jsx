@@ -138,7 +138,7 @@ function SignUp() {
           required
         />
         <small id="emailHelp" className="form-text text-muted customText">
-          We'll never share your email with anyone else.
+          We will never share your email with others.
         </small>
       </div>
       <div className="form-group">
