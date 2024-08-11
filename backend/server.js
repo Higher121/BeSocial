@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://besocialssr.netlify.app' // Replace with your actual Netlify domain
+}));
 app.use(bodyParser.json());
-
 // MongoDB connection
 const mongoUri = 'mongodb+srv://DeviLoper:Devil%40123@cluster0.aawm910.mongodb.net/Besocial?retryWrites=true&w=majority';
 const client = new MongoClient(mongoUri);
