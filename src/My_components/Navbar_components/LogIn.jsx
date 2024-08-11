@@ -9,43 +9,38 @@ function LogIn() {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [formError, setFormError] = useState('');
-
+  const [fullName, setFullName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Attempting to log in:', { email, password, rememberMe });  // Log attempt
+    console.log('Attempting to log in:', { email, password, rememberMe });
 
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
-        email,
-        password
-      });
+      const response = await axios.post('http://localhost:5000/api/login', { email, password });
       
       if (response.status === 200) {
         alert('Login successful!');
         setIsLoggedIn(true);
-        // Handle successful login, e.g., save user data, redirect, etc.
+        const { fullName } = response.data;
+        setFullName(fullName);
+        console.log('Login successful, full name:', fullName);
       } else {
         setFormError('Invalid email or password.');
       }
     } catch (error) {
-      console.error('Login request error:', error);  // Log error
+      console.error('Login request error:', error);
       setFormError('Failed to login user.');
     }
   };
 
-if(isLoggedIn){
-  return (
-     <Home></Home> //hERE USER  NAME SHOULD ALSO COME FROM dtBS
-  )
-}
-
+  if (isLoggedIn) {
+    return <Home fullName={fullName} />;
+  }
 
   return (
     <form onSubmit={handleSubmit} id='LoginForm' className='designForm'>
-      <h2 style={{ marginTop:'5px', textAlign:"center", color:'blue' }}>Login</h2>
+      <h2 style={{ marginTop: '5px', textAlign: 'center', color: 'blue' }}>Login</h2>
       <div className="form-group" id='form-div'>
         <label htmlFor="exampleInputEmail1" className="custom-label">Email address</label>
         <input 

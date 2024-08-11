@@ -10,18 +10,29 @@ app.use(bodyParser.json());
 
 // MongoDB connection
 const mongoUri = 'mongodb+srv://DeviLoper:Devil%40123@cluster0.aawm910.mongodb.net/Besocial?retryWrites=true&w=majority';
-const client = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(mongoUri);
 
 let db;
-client.connect()
-  .then(() => {
+
+async function connectToMongo() {
+  try {
+    await client.connect();
     db = client.db('Besocial');
     console.log('MongoDB connected...');
-  })
-  .catch(err => console.error('Error connecting to MongoDB:', err));
+  } catch (err) {
+    console.error('Error connecting to DataBase', err);
+  }
+}
+
+// Call the function to connect to MongoDB
+connectToMongo();
 
 // User Signup
 app.post('/api/signup', async (req, res) => {
+  if (!db) {
+    return res.status(500).send({ error: 'Database not connected.' });
+  }
+
   const { fullName, countryCode, mobileNumber, email, password } = req.body;
   console.log('Signup request received:', req.body);  // Log incoming request data
 
@@ -44,6 +55,10 @@ app.post('/api/signup', async (req, res) => {
 
 // User Login
 app.post('/api/login', async (req, res) => {
+  if (!db) {
+    return res.status(500).send({ error: 'Database not connected.' });
+  }
+
   const { email, password } = req.body;
   console.log('Login request received:', req.body);  // Log incoming request data
 
@@ -66,9 +81,12 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// create a post
-
+// Create a post
 app.post('/api/posts', (req, res) => {
+  if (!db) {
+    return res.status(500).send({ error: 'Database not connected.' });
+  }
+
   const { title, content, imageUrl } = req.body;
   console.log('Create post request received:', req.body);  // Log incoming request data
 
@@ -83,9 +101,12 @@ app.post('/api/posts', (req, res) => {
   });
 });
 
-//  get all posts
-
+// Get all posts
 app.get('/api/posts', (req, res) => {
+  if (!db) {
+    return res.status(500).send({ error: 'Database not connected.' });
+  }
+
   db.collection('posts').find().sort({ createdAt: -1 }).toArray((err, posts) => {
     if (err) {
       console.error('Error fetching posts:', err);

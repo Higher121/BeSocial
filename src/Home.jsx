@@ -3,6 +3,8 @@ import MyFooter from "./My_components/MyFooter";
 import HeroSection from "./My_experiments/HeroSection";
 
 export const Home = () =>{
+  
+
     return <>
  <div className="heroSection" >
 
