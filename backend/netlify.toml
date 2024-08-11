@@ -1,18 +1,8 @@
 [build]
-  publish = "build"
+  publish = "build" # Adjust based on your build directory
   functions = "netlify/functions"
 
 [[redirects]]
-  # Redirect API calls to Netlify Functions
-  from = "/api/login"
-  to = "/.netlify/functions/login"
-  status = 200
-
-  from = "/api/signup"
-  to = "/.netlify/functions/signup"
-  status = 200
-
-  # Redirect all other API calls
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200

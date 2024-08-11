@@ -22,9 +22,10 @@ function LogIn() {
       if (response.status === 200) {
         alert('Login successful!');
         setIsLoggedIn(true);
-        const { fullName } = response.data;
-        setFullName(fullName);
-        console.log('Login successful, full name:', fullName);
+
+         const { fullName } = response.data;
+          setFullName(fullName);
+           console.log('Login successful, full name:', fullName);
       } else {
         setFormError('Invalid email or password.');
       }
