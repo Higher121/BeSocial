@@ -57,7 +57,7 @@ function SignUp() {
 
     if (formValid) {
       try {
-        const response = await axios.post('https://your-netlify-site.netlify.app/api/login', { email, password });
+        // const response = await axios.post('https://your-netlify-site.netlify.app/api/login', { email, password });
 
         const response = await axios.post('http://localhost:5000/api/signup', {
           fullName,
