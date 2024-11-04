@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/server.js"
+    }
+  ],
+  "env": {
+    "MONGODB_URI": "mongodb+srv://DeviLoper:Devil%40123@cluster0.aawm910.mongodb.net/Besocial?retryWrites=true&w=majority",
+    "OTHER_ENV_VARIABLE": "value"
+  }
+}

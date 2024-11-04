@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './SignLog.css'; // Import the CSS file
+import './SignLog.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import LogIn from './LogIn';
@@ -18,20 +18,21 @@ function SignUp() {
   const [formError, setFormError] = useState('');
 
   const [isSignedUp, setIsSignedUp] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (isSubmitting) return; // Prevent multiple submissions
+    setIsSubmitting(true);
 
     let formValid = true;
     let errorMessage = '';
 
-    // Check if any field is empty
     if (!fullName || !countryCode || !mobileNumber || !email || !password || !confirmPassword) {
       errorMessage = 'All fields must be filled out.';
       formValid = false;
-    } 
+    }
 
-    // Validate mobile number only if form is still valid
     if (formValid && !/^\d{10}$/.test(mobileNumber)) {
       setMobileError('Please enter a valid 10-digit mobile number.');
       formValid = false;
@@ -39,7 +40,6 @@ function SignUp() {
       setMobileError('');
     }
 
-    // Validate passwords only if form is still valid
     if (formValid && (password === '' || confirmPassword === '')) {
       setPasswordError('Password and confirm password fields cannot be empty.');
       formValid = false;
@@ -57,14 +57,12 @@ function SignUp() {
 
     if (formValid) {
       try {
-        // const response = await axios.post('https://your-netlify-site.netlify.app/api/login', { email, password });
-
-        const response = await axios.post('http://localhost:5000/api/signup', {
+        const response = await axios.post('https://backend-9vpwv3i13-higher121s-projects.vercel.app/api/signup', {
           fullName,
           countryCode,
           mobileNumber,
           email,
-          password
+          password,
         });
         alert('Signup successful! Login Now');
         setIsSignedUp(true);
@@ -74,6 +72,7 @@ function SignUp() {
     } else {
       setFormError(errorMessage);
     }
+    setIsSubmitting(false); // Reset after request completes
   };
 
   if (isSignedUp) {
@@ -82,7 +81,7 @@ function SignUp() {
 
   return (
     <form onSubmit={handleSubmit} className="designForm">
-      <h2 style={{ marginTop: '5px', textAlign: "center", color: 'blue' }}>SignUp</h2>
+      <h2 style={{ marginTop: '5px', textAlign: 'center', color: 'blue' }}>SignUp</h2>
       <div className="form-group">
         <label htmlFor="inputName" className="custom-label">Enter Your Full Name</label>
         <input
@@ -110,7 +109,6 @@ function SignUp() {
           <option value="+977">+977 (Nepal)</option>
           <option value="+92">+92 (Pakistan)</option>
           <option value="+880">+880 (Bangladesh)</option>
-          {/* Add more country codes as needed */}
         </select>
       </div>
       <div className="form-group">
@@ -133,15 +131,11 @@ function SignUp() {
           type="email"
           className="form-control custom-input"
           id="exampleInputEmail1"
-          aria-describedby="emailHelp"
           placeholder="Enter email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <small id="emailHelp" className="form-text text-muted customText">
-          We will never share your email with others.
-        </small>
       </div>
       <div className="form-group">
         <label htmlFor="exampleInputPassword1" className="custom-label">Create Password</label>
@@ -177,13 +171,14 @@ function SignUp() {
           onChange={(e) => setAgreedT_C(e.target.checked)}
           required
         />
-      <label className="form-check-label" htmlFor="exampleCheck1">
+        <label className="form-check-label" htmlFor="exampleCheck1">
           I agree to the <Link to="/terms-and-conditions">Terms & Conditions</Link>
         </label>
       </div>
       {formError && <div className="form-error">{formError}</div>}
-        <button type="submit" className="btn btn-primary customBtn">Submit</button>
-      {formError && <div className="form-error">{formError}</div>}
+      <button type="submit" className="btn btn-primary customBtn" disabled={isSubmitting}>
+        {isSubmitting ? 'Submitting...' : 'Submit'}
+      </button>
       <div className="signup-link">
         <Link to="/login">Already A Member !! LogIn Now</Link>
       </div>

@@ -17,7 +17,7 @@ function LogIn() {
     console.log('Attempting to log in:', { email, password, rememberMe });
 
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { email, password });
+      const response = await axios.post('https://backend-9vpwv3i13-higher121s-projects.vercel.app/api/login', { email, password });
       
       if (response.status === 200) {
         alert('Login successful!');
